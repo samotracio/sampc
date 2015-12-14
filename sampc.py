@@ -96,10 +96,12 @@ class Client(object):
     To send data to Topcat
     ::
     
-        # Send array or dict
+        # Send array / list / dict
         arr = np.random.random([100,3])
+        lis = [5,6,10,20,50]
         dic = {'x':[1,2,3,4],'y':['hey','lift','your','head']}
         c.send(arr,'arr')
+        c.send(lis,'lis')
         c.send(dic,'dic')
         # Send an array with custom colum names
         c.send(arr,'arrcust',cols=['x','y','z'])
@@ -299,7 +301,7 @@ class Client(object):
         
         Parameters
         ----------
-        data : numpy array, list, or astropy table
+        data : numpy array, dict, list, or astropy table
             Data to be transfered
         k : string
             Name for data. A fits table will be saved in $HOME$/tempo/samptables/k.fits. **k** defaults to var.fits
@@ -324,6 +326,10 @@ class Client(object):
                 cols = ["col"+str(n).zfill(3) for n in range(nc)]
             # Save as astopy table in fits format
             Table(data=data,names=cols).write(fullk,format='fits',overwrite=True)
+        elif isinstance(data,list):
+            nr=len(data)
+            if cols is None: cols=['col001']
+            Table(data=np.array(data).reshape(nr,1),names=cols).write(fullk,format='fits',overwrite=True)
         elif isinstance(data,dict):
             Table(data=data.values(),names=data.keys()).write(fullk,format='fits',overwrite=True)
         elif isinstance(data,Table):
