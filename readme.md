@@ -31,13 +31,13 @@ Basic Usage
     arr = np.random.random([100,3])
     c.send(arr,'arr')
 
-    # RECEIVE A TABLE  (broadcast SomeTable.fits from Topcat)
+    # RECEIVE A TABLE  (first broadcast SomeTable.fits from Topcat)
     data = c['SomeTable.fits']
 
     # SEND ROWS     
     c.sendrows('arr',[3,6,15,16])
 
-    # RECEIVE ROWS (broadcast some rows or a subset in Topcat)
+    # RECEIVE ROWS (first broadcast some rows or a subset in Topcat)
     c.rowlist
 
 For further examples see documentation for class ``Client``
